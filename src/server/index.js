@@ -98,53 +98,6 @@ function _calcPlayerGameInfo(games) {
   }
 }
 
-// Handle GET request for Profile page
-//app.get('/profile', (req, res) => {
-//  if (!req.query.username) {
-//    res.render('profile', {});
-//    return;
-//  }
-//  User.findOne({ 'username': req.query.username.toLowerCase() }, (err, user) => {
-//    if (err) {
-//      console.log(err);
-//      res.status(500).send();
-//      return;
-//    }
-//    if (!user) {
-//        res.status(404).send({ error: 'unknown user' });
-//    } else {
-//      user = _.pick(
-//        user,
-//        'username',
-//        'first_name',
-//        'last_name',
-//        'city',
-//        'primary_email',
-//        'fastest_win',
-//        'highest_score',
-//        'win_ratio',
-//        'games_played'
-//      );
-//      // user is logged in
-//      let logged_in_username = req.session.username || '';
-//      User.findOne({ 'username': logged_in_username.toLowerCase() }, (err, logged_in_user) => {
-//        if (err) {
-//          console.log(err);
-//          res.status(500).send(err);
-//          return;
-//        }
-//        let email = logged_in_user ? logged_in_user.primary_email.toLowerCase() : '';
-//        logged_in_username = logged_in_user ? logged_in_username : null;
-//        let hash = crypto.createHash('md5').update(email).digest('hex');
-//        let profile_user_hash = crypto.createHash('md5').update(user.primary_email).digest('hex');
-//        user = _.extend(user, { logged_in_username, hash, profile_user_hash });
-//        console.log(user);
-//        res.render('profile', user); 
-//        });
-//    }
-//  });
-//});
-
 // Handle POST to create a user session
 app.post('/v1/session', function(req, res) {
     if (!req.body || !req.body.username || !req.body.password) {
@@ -499,40 +452,6 @@ app.get('*', function(req, res) {
     });
 });
 
-// returns an instance of node-letsencrypt with additional helper methods
-var lex = require('letsencrypt-express').create({
-  // set to https://acme-v01.api.letsencrypt.org/directory in production
-  server: 'staging',
-  challenges: { 'http-01': require('le-challenge-fs')
-    .create({ webrootPath: '/tmp/acme-challenges' }) },
-  store: require('le-store-certbot').create({ webrootPath: '/tmp/acme-challenges' }),
-
-  // You probably wouldn't need to replace the default sni handler
-  // See https://github.com/Daplie/le-sni-auto if you think you do
-  //, sni: require('le-sni-auto').create({})
-
-  approveDomains: approveDomains
-});
-
-function approveDomains(opts, certs, cb) {
-  // The domains being approved for the first time are listed in opts.domains
-  // Certs being renewed are listed in certs.altnames
-  if (certs) {
-    opts.domains = certs.altnames;
-  }
-  else {
-    opts.email = 'eraymond1411@gmail.com';
-    opts.agreeTos = true;
-  }
-  cb(null, { options: opts, certs: certs });
-}
-
-// handles acme-challenge and redirects to https
-require('http').createServer(lex.middleware(require('redirect-https')())).listen(80, function () {
-  console.log("Listening for ACME http-01 challenges on", this.address());
-});
-
-// handles your app
-require('https').createServer(lex.httpsOptions, lex.middleware(app)).listen(443, function () {
-  console.log("Listening for ACME tls-sni-01 challenges and serve app on", this.address());
+let server = app.listen(8080, function () {
+    console.log('Example app listening on ' + server.address().port);
 });
