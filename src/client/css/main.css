@@ -1,0 +1,222 @@
+body {
+  background-color: #F0F8FF;
+}
+
+.mycol {
+  padding: 0;
+}
+
+.myrow {
+  margin: 0px;
+}
+
+@media (min-width: 400px){
+  .seven-cols .col-xs-1 {
+    width: 11%;
+    *width: 11%;
+  }
+}
+
+@media (min-width: 700px) {
+  .seven-cols .col-xs-1 {
+    width: 12%;
+    *width: 12%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .seven-cols .col-xs-1 {
+    width: 13%;
+    *width: 13%;
+  }
+}
+
+.seven-cols {
+  margin-bottom: 40px;
+  margin-top: 40px;
+  margin-left: 10px;
+}
+
+.card-pile {
+  margin-right: 15px;
+}
+
+.highlighted {
+  -webkit-box-shadow:0 0 20px blue; 
+  -moz-box-shadow: 0 0 20px blue; 
+  box-shadow:0 0 20px blue;
+}
+
+.card-pile-indicator {
+  border: 1px solid;
+  border-radius: 20px;
+}
+
+.card-container {
+  position: absolute;
+}
+
+.start-page{
+  opacity: 1;
+}
+.mycontainer {
+  position: absolute;
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  margin-top: -18%;
+}
+
+.edit-form-container {
+  width: 60%;
+}
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: #F0F8FF;
+}
+
+.homepage {
+  background-color: transparent;
+  background-image: url("../img/background.jpg");
+  background-size: 100%;
+}
+
+.homepage-menu {
+  display: flex;
+  justify-content: center;
+  top: 30%;
+  position: relative;
+}
+
+.homepage-btn {
+  margin: 25px;
+}
+
+.homepage-container {
+  background-color: transparent;
+}
+
+.homepage_ad {
+  color: goldenrod;
+}
+
+.personal-stories {
+  display: flex;
+  justify-content: center;
+  margin-top: 20%;
+}
+
+.login-form {
+  width: 50%;
+  margin-top: 10%;
+}
+
+.profile-form {
+  margin-top: 10%;
+  width: 68%;
+  height: 60%;
+  padding: 15px;
+}
+
+.profile-first-name {
+  margin-right: 10px;
+}
+
+.profile-picture {
+  padding-left: 0px;
+}
+
+.profile-picture-img {
+  width: 100%;
+}
+
+.profile-info {
+  border-bottom: 1px solid;
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
+.center-card {
+  z-index: 2;
+}
+
+.mynav {
+  z-index: 3;
+}
+
+.game-nav {
+  margin-top: -40px;
+  background-color: rgba(0,0,0,.25);
+}
+.placeholder {
+  opacity: 0;
+  border: 1px solid;
+}
+
+.container-placeholder {
+}
+
+.results {
+  border-left: 5px solid white;
+  border-right: 5px solid white;
+  padding-left: 15px;
+  padding-right: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.results-header {
+  text-align: center;
+  text-decoration: underline;
+  border-top: 5px solid white;
+  border-radius: 50px;
+  padding-top: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.results-value {
+  float: right;
+}
+
+.results-info {
+  margin-top: 10%;
+  padding: 15px;
+}
+
+.results-table {
+  font-size: 1.15em;
+}
+
+.result-links {
+  display: flex;
+  justify-content: center;
+}
+
+.result-links-row {
+  border-bottom: 5px solid white;
+  border-radius: 50px;
+  padding-bottom: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 10px;
+}
+
+nav {
+  position: fixed;
+  width: 100vw;
+}
+
+nav ul {
+  float: right;
+  margin-right: 25px;
+}
