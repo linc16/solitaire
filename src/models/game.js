@@ -4,7 +4,8 @@
 
 let crypto              = require('crypto'),
     mongoose            = require('mongoose'),
-    Schema              = mongoose.Schema;
+    Schema              = mongoose.Schema,
+    Constants           = require('../constants.js');
 
 /***************** Game Model *******************/
 
@@ -19,7 +20,11 @@ let Game = new Schema({
     'players':         { type: [[{ type : Schema.ObjectId, ref: 'User' }]], default: [] },
     'score':           { type: Number, default: 0},
     'state':           { type: [], default: []},
-    'status':          { type: String, default: 'Active' },
+    'status':          { type: String, default: 'Active', enum: [
+                         Constants.STATUS_ACTIVE,
+                         Constants.STATUS_LOST,
+                         Constants.STATUS_WON,
+                       ]},
     'tombstoned':      { type: Boolean, default: false },
     'turn':            { type: Schema.ObjectId, ref: 'User' },
     'type':            { type: String , required: true },

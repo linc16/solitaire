@@ -7,6 +7,7 @@ export class GameSummary extends React.Component {
     constructor(props) {
         super(props);
         this._buildGameRow = this._buildGameRow.bind(this);
+        this._isGameComplete = this._isGameComplete.bind(this);
         this._getDurationInMinutes = this._getDurationInMinutes.bind(this);
         this._handleMarkComplete = this._handleMarkComplete.bind(this);
         this._handleDelete = this._handleDelete.bind(this);
@@ -20,8 +21,8 @@ export class GameSummary extends React.Component {
 
     _buildGameRow(game) {
       let curr_date = new Date();
-      let className = 'btn btn-warning markGameAsComplete '
-      className += game.status === 'complete' ?  'disabled' : null;
+      let className = 'btn btn-success '
+      className += this._isGameComplete(game.status) ?  'disabled' : null;
       return (
           <tr key={game._id} id={game._id}>
             <td name={game._id} className='clickable-row'>{game.type}</td>
@@ -33,29 +34,23 @@ export class GameSummary extends React.Component {
               )}
             </td>
             <td name={game._id} className='clickable-row'>{game.num_moves}</td>
-            <td>
-              <button
-                id={'complete-' + game._id}
-                name={game._id}
-                className={className}
-                onClick={this._handleMarkComplete}
-              >
-              Completed
-              </button>
-            </td>
+            <td><Link
+              name={game._id}
+              className={className}
+              to={'/game?id=' + game._id}
+            >Resume</Link></td>
             <td><button
               name={game._id}
               className='btn btn-danger deleteGame'
               onClick={this._handleDelete}
             >Delete</button></td>
-            <td><Link
-              name={game._id}
-              className='btn btn-success'
-              to={'/game?id=' + game._id}
-            >Resume</Link></td>
           </tr>
       );
     }
+
+    _isGameComplete(game_status) {
+     return game_status === 'Won' || game_status === 'Lost'; 
+   }
 
     _handleMarkComplete(event) {
       event && event.preventDefault();

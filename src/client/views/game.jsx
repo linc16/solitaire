@@ -189,6 +189,7 @@ export class Game extends React.Component {
     this._setGameState(res.state);
     this._clearCards();
     this._initializeCards();
+    // change this to a constant
     if (res.status === 'won') {
       this._setGameWonStatus();
     }

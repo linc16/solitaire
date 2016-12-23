@@ -30,35 +30,40 @@ let User = new Schema({
                           validate: {
                             validator: function(v) {
                               return v.length >= 6 && v.length <= 16 && /^[a-z0-9]+$/i.test(v); 
-                            }
+                            },
+                            message: 'Invalid username',
                           }
                         },
     'first_name':       { type: String, default: '',
                           validate: {
                             validator: function(v) {
                               return v.length >= 0 && v.length <= 50 && /^[a-z]+$/i.test(v); 
-                            }
+                            },
+                            message: 'Invalid first name',
                           }
                         },
     'last_name':        { type: String, default: '',
                           validate: {
                             validator: function(v) {
                               return v.length >= 0 && v.length <= 50 && /^[a-z]+$/i.test(v); 
-                            }
+                            },
+                            message: 'Invalid last name',
                           }
                         },
     'primary_email':    { type: String, index: { unique: true }, required: true,
                           validate: {
                             validator: function(v) {
                               return v.length >= 0 && v.length <= 50 && email_regex.test(v); 
-                            }
+                            },
+                            message: 'Invalid email',
                           }
                         },
     'city':             { type: String, default: '',
                           validate: {
                             validator: function(v) {
                               return v.length >= 0 && v.length <= 50 && /^[a-z]+$/i.test(v); 
-                            }
+                            },
+                            message: 'Invalid city',
                           }
                         },
     'created':          { type: Date },

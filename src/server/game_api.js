@@ -2,6 +2,7 @@ let _ = require('lodash');
 let mongoose = require('mongoose');
 let validMoves = require('./valid_moves.js');
 let sanitize = require('./sanitize.js');
+let Constants = require('../constants.js');
 let User = require('../models/user');
 let Game = require('../models/game');
 
@@ -131,9 +132,22 @@ function handleMove(app) {
           status_code = 200;
           resp = {'state': _getNewState(state, move)};
           updateGameState(resp.state, req.body.id);
+          update_query = {$inc: { 'num_moves':1}};
           if (_isGameWon(resp.state)) {
-            resp = _.extend(resp, {status: 'won'});
+            resp = _.extend(resp, { status: Constants.STATUS_WON });
+            update_query = _.extend(update_query, {'status': Constants.STATUS_WON});
           }
+          Game.update({'_id': data.id}, update_query, (err, result) => {
+            if (err) {
+              console.log(err);
+              res.status(500).send()
+            } else if (!result) {
+              console.log('No game found: ' + data.id);
+            } else {
+              console.log('no errors---------------');
+              console.log('game updated: ' + data.id);
+            }
+          });
           return;
         }
       });
@@ -185,8 +199,8 @@ function flipCards(cards) {
 
 function _isGameWon(state) {
    let num_stacks = 4; 
-   for (let i = 0; i < num_stacks; ++i) {
-       if (state['stack' + i].length < 13) return false;
+   for (let i = 1; i <= num_stacks; ++i) {
+     if (state['stack' + i].length < 13) return false;
    }
    return true;
 }

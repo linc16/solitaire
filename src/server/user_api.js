@@ -95,7 +95,6 @@ function handleCreate(app) {
             return;
         }
         else {
-          console.log('hi')
           let newUser = _.pick(data, 'username', 'first_name', 'last_name', 'password', 'dob', 'address_street', 'city', 'address_state', 'address_zip', 'primary_phone', 'primary_email');
           let user = new User(newUser);
           user.save({}, (err, user) => {
