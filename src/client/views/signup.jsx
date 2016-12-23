@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { Link } from 'react-router';
-import { browserHistory } from 'react-router'
 import { ProfileForm } from './components/profileform';
+import { browserHistory } from 'react-router'
 
 export class SignUp extends React.Component {
     constructor(props) {

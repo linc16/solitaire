@@ -16,11 +16,6 @@ import { UserList } from './views/edit';
 
 import styles from './css/main.css';
 
-const userInfo = {
-    username: '',
-    email: '',
-};
-
 class App extends React.Component {
     render() {
         return (<div>
@@ -28,7 +23,6 @@ class App extends React.Component {
         </div>);
     }
 }
-
 
 // Finally, render with some routes
 render((

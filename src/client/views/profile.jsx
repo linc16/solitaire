@@ -4,16 +4,16 @@ import React from 'react';
 import { Link } from 'react-router';
 import { GameSummary } from './components/gamesummary';
 import { NavBar } from './components/navbar';
+const ActiveUser = require('../utils/active_user');
 
 export class Profile extends React.Component {
     constructor(props) {
         super(props);
         this._getProfileInfo = this._getProfileInfo.bind(this);
         this._handleGameDelete = this._handleGameDelete.bind(this);
-        this._getActiveUser = this._getActiveUser.bind(this);
         this._getProfileOwner = this._getProfileOwner.bind(this);
         this.state = {
-          active_user: this._getActiveUser(),
+          active_user: ActiveUser.getActiveUser(),
           city: '',
           fastest_win: "NA",
           first_name: '',
@@ -29,10 +29,6 @@ export class Profile extends React.Component {
 
     componentDidMount() {
         this._getProfileInfo();
-    }
-
-    _getActiveUser() {
-      return sessionStorage.getItem('current_user');
     }
 
     _getProfileOwner() {
@@ -92,7 +88,11 @@ export class Profile extends React.Component {
     }
     render() {
         return <div>
-            <NavBar username={this.state.username} activeUser={this.state.active_user}></NavBar>
+            <NavBar
+              username={this.state.username}
+              activeUser={this.state.active_user}
+              isProfile={true}
+            ></NavBar>
             <div className="isProfile">
               <div className="form-container">
                 <div className="profile-form">

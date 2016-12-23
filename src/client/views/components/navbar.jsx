@@ -10,6 +10,7 @@ export class NavBar extends React.Component {
         this._renderLoginBtn = this._renderLoginBtn.bind(this);
         this._renderLogoutBtn = this._renderLogoutBtn.bind(this);
         this._renderStartGameBtn = this._renderStartGameBtn.bind(this);
+        this._renderProfileBtn = this._renderProfileBtn.bind(this);
         this._renderEditBtn = this._renderEditBtn.bind(this);
         this._renderGravitar = this._renderGravitar.bind(this);
         this._renderRegisterBtn = this._renderRegisterBtn.bind(this);
@@ -36,14 +37,21 @@ export class NavBar extends React.Component {
       return <Link className='btn btn-info' to='/start'>Start Game</Link>
     }
 
+    _renderProfileBtn() {
+      if (this.props.isProfile) return; 
+      let link = '/profile?username=' + this.props.activeUser;
+      return <Link className='btn btn-info' to={link}>Profile</Link>
+    }
+
     _renderEditBtn() {
-      if (!this._isUserLoggedIn() || this.props.username != this.props.activeUser) return; 
+      if (!this.props.isProfile || !this._isUserLoggedIn() || this.props.username != this.props.activeUser) return; 
       return <Link className='btn btn-info' to='/edit'>Edit</Link>
     }
 
     _getEmailHash() {
       return sessionStorage.getItem('email_hash');
     }
+
     _renderGravitar() {
       if(!this._isUserLoggedIn()) return;
       return <img src={'https://s.gravatar.com/avatar/' + this._getEmailHash() + '?s=35'}></img>
@@ -77,6 +85,7 @@ export class NavBar extends React.Component {
             <ul>
               {this._renderLogoutBtn()}
               {this._renderStartGameBtn()}
+              {this._renderProfileBtn()}
               {this._renderEditBtn()}
               {this._renderGravitar()}
               {this._renderRegisterBtn()}
@@ -89,5 +98,6 @@ export class NavBar extends React.Component {
 
 NavBar.proptypes = {
   username: React.PropTypes.string,
-  active_user: React.PropTypes.string,
+  activeUser: React.PropTypes.string,
+  isProfile: React.PropTypes.bool,
 }

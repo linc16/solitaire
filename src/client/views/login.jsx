@@ -4,6 +4,8 @@ import React from 'react';
 import { Link } from 'react-router';
 import { browserHistory } from 'react-router';
 
+const ActiveUser = require('../utils/active_user');
+
 export class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -42,9 +44,9 @@ export class Login extends React.Component {
       },
       success: res => {
         $("#login-alert").html();
-        sessionStorage.setItem("current_user", res.username);
-        sessionStorage.setItem("user_email", res.primary_email);
-        sessionStorage.setItem("email_hash", res.email_hash);
+        ActiveUser.setActiveUser(res.username);
+        ActiveUser.setUserEmail(res.primary_email);
+        ActiveUser.setEmailHash(res.email_hash);
         browserHistory.push('/start');
       },
       error: err => {

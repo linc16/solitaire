@@ -4,15 +4,19 @@ import React from 'react';
 import { Link } from 'react-router';
 import { browserHistory } from 'react-router'
 
+import { NavBar } from './components/navbar';
+const ActiveUser = require('../utils/active_user');
+
 export class StartGame extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      active_user: ActiveUser.getActiveUser(),
       deck_type: 'normal',
       draw_count: '1',
       game_name: 'placeholdername',
-      num_players: 1,
       game_type: 'klondike',
+      num_players: 1,
     }
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -27,9 +31,7 @@ export class StartGame extends React.Component {
   }
 
   componentWillMount() {
-    let user = sessionStorage.getItem("current_user");
-    console.log('curr user: ' + user);
-    if (!user || user.length == 0) {
+    if (!this.state.active_user || this.state.active_user.length == 0) {
       browserHistory.push('/login')
       return;
     }
@@ -177,6 +179,9 @@ export class StartGame extends React.Component {
 
   render() {
     return <div>
+      <NavBar
+        activeUser={this.state.active_user}
+      ></NavBar>
       <div className="start-page">
         <div className="form-container">
         <div className="login-form container">
