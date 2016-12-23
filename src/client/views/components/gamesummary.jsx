@@ -3,6 +3,8 @@
 import React from 'react';
 import { Link } from 'react-router';
 
+const Constants = require('../../utils/constants.js');
+
 export class GameSummary extends React.Component {
     constructor(props) {
         super(props);
@@ -49,7 +51,7 @@ export class GameSummary extends React.Component {
     }
 
     _isGameComplete(game_status) {
-     return game_status === 'Won' || game_status === 'Lost'; 
+     return game_status === Constants.STATUS_WON || game_status === Constants.STATUS_LOST; 
    }
 
     _handleMarkComplete(event) {

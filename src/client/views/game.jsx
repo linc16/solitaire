@@ -3,6 +3,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
+const Constants = require('../utils/constants.js');
 
 export class Game extends React.Component {
   constructor(props) {
@@ -190,19 +191,19 @@ export class Game extends React.Component {
     this._clearCards();
     this._initializeCards();
     // change this to a constant
-    if (res.status === 'won') {
+    if (res.status === Constants.STATUS_WON) {
       this._setGameWonStatus();
     }
     localStorage.setItem('selectEvent','{}');
   }
 
   _setGameWonStatus() {
-    this.setState({status: 'won'});
+    this.setState({status: Constants.STATUS_WON});
     $('.card-container').off('click');
   }
   
   _renderEndGameMsg() {
-    if (this.state.status === 'won') {
+    if (this.state.status === Constants.STATUS_WON) {
       return <div className='end-game-msg'><h1>You Won!</h1></div>
     }
     return;
