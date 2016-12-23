@@ -21,6 +21,7 @@ export class ProfileForm extends React.Component {
         this._isValidPassword = this._isValidPassword.bind(this);
         this._isValidUsername = this._isValidUsername.bind(this);
         this._getSetInactiveInput = this._getSetInactiveInput.bind(this);
+        this._getPasswordInput = this._getPasswordInput.bind(this);
     }
 
     handleChange(event) {
@@ -81,7 +82,27 @@ export class ProfileForm extends React.Component {
         </div>
       );
     }
-    render() {
+    
+    _getPasswordInput() {
+      if (this.props.restrictSetPass) return;
+      return (
+        <div className="form-group row">
+          <label htmlFor="password" className="col-sm-3 col-form-label">Password</label>
+          <div className="col-sm-9">
+            <input
+              className="form-control"
+              id="password"
+              name="password"
+              type="password"
+              onChange={this.handleChange}
+              value={this.state.password}
+            ></input>
+          </div>
+        </div>
+      );
+    }
+   
+   render() {
         return <div>
           <form onSubmit={this.handleSubmit}>
             <div className="form-group row">
@@ -125,19 +146,7 @@ export class ProfileForm extends React.Component {
                 ></input>
               </div>
             </div>
-            <div className="form-group row">
-              <label htmlFor="password" className="col-sm-3 col-form-label">Password</label>
-              <div className="col-sm-9">
-                <input
-                  className="form-control"
-                  id="password"
-                  name="password"
-                  type="password"
-                  onChange={this.handleChange}
-                  value={this.state.password}
-                ></input>
-              </div>
-            </div>
+            {this._getPasswordInput()}
             <div className="form-group row">
               <label htmlFor="city" className="col-sm-3 col-form-label">City</label>
               <div className="col-sm-9">

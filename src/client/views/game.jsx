@@ -7,6 +7,9 @@ import { Link } from 'react-router';
 export class Game extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      status: 'active',
+    }
     this.initGameState = this.initGameState.bind(this);
     this._initializeCards = this._initializeCards.bind(this);
     this._insertPilePlaceholder = this._insertPilePlaceholder.bind(this);
@@ -14,6 +17,8 @@ export class Game extends React.Component {
     this._getGameStateFromDB = this._getGameStateFromDB.bind(this);
     this.addCardContainerClickHandler = this.addCardContainerClickHandler.bind(this);
     this._onMoveSuccess = this._onMoveSuccess.bind(this);
+    this._renderEndGameMsg = this._renderEndGameMsg.bind(this);
+    this._setGameWonStatus = this._setGameWonStatus.bind(this);
     this._handleSelectCards = this._handleSelectCards.bind(this);
     this._getSelectedCardIds = this._getSelectedCardIds.bind(this);
     this._isCardSelectable = this._isCardSelectable.bind(this);
@@ -98,7 +103,6 @@ export class Game extends React.Component {
       }
     }
     this.addCardContainerClickHandler();
-    //addCardContainerDragHandler();
   }
 
   _insertPilePlaceholder(pileType, pileNum = '') {
@@ -171,7 +175,7 @@ export class Game extends React.Component {
         }
         this._isMoveValid(
           move,
-          (res) => { this._onMoveSuccess(res, selectEvent, e.delegateTarget.id) },
+          res => { this._onMoveSuccess(res, selectEvent, e.delegateTarget.id) },
           () => { 
             this._removeHighlight(selectEvent.cards);
             localStorage.setItem('selectEvent', JSON.stringify({}));
@@ -185,7 +189,22 @@ export class Game extends React.Component {
     this._setGameState(res.state);
     this._clearCards();
     this._initializeCards();
+    if (res.status === 'won') {
+      this._setGameWonStatus();
+    }
     localStorage.setItem('selectEvent','{}');
+  }
+
+  _setGameWonStatus() {
+    this.setState({status: 'won'});
+    $('.card-container').off('click');
+  }
+  
+  _renderEndGameMsg() {
+    if (this.state.status === 'won') {
+      return <div className='end-game-msg'><h1>You Won!</h1></div>
+    }
+    return;
   }
 
   _handleSelectCards(src) {
@@ -341,7 +360,7 @@ export class Game extends React.Component {
     let state = this._getGameState();
     let id = this._getParameterFromUrl('id');
     $.ajax({
-      type: "POST",
+      type: "PUT",
       dataType: "json",
       url: "/v1/game/move",
       data: {
@@ -416,7 +435,7 @@ export class Game extends React.Component {
   render() {
     return <div>
       <div onload="setMovableCards()" id="game-container">
-        <div className="animsition" >
+        <div>
         <nav className="mynav game-nav">
           <ul>
           <Link
@@ -462,6 +481,7 @@ export class Game extends React.Component {
           </div>
           </div>
         </div>
+        {this._renderEndGameMsg()}
         <div className="row myrow seven-cols">
           <div className="mycol col-xs-1 card-pile" id="pile1">
           </div>

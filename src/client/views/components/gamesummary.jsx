@@ -72,11 +72,6 @@ export class GameSummary extends React.Component {
       let buttonId = event.target.id;
       let gameId = event.target.name;
       this._deleteGame(gameId, () => {this._removeGameFromUI(gameId)});
-       // e && e.preventDefault()
-       // console.log('delete');
-       // this._deleteGame(e.target.id);
-       // //reload games after delete
-       // location.reload();
     }
 
     _removeGameFromUI(gameId) {

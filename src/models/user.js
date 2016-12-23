@@ -23,12 +23,44 @@ function generateSalt() {
   return crypto.randomBytes(8).toString('hex');
 }
 
+let email_regex = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i
+
 let User = new Schema({
-    'username':         { type: String, unique : true, required : true },
-    'first_name':       { type: String, default: '' },
-    'last_name':        { type: String, default: '' },
-    'primary_email':    { type: String, index: { unique: true }, required: true },
-    'city':             { type: String, default: '' },
+    'username':         { type: String, unique : true, required : true,
+                          validate: {
+                            validator: function(v) {
+                              return v.length >= 6 && v.length <= 16 && /^[a-z0-9]+$/i.test(v); 
+                            }
+                          }
+                        },
+    'first_name':       { type: String, default: '',
+                          validate: {
+                            validator: function(v) {
+                              return v.length >= 0 && v.length <= 50 && /^[a-z]+$/i.test(v); 
+                            }
+                          }
+                        },
+    'last_name':        { type: String, default: '',
+                          validate: {
+                            validator: function(v) {
+                              return v.length >= 0 && v.length <= 50 && /^[a-z]+$/i.test(v); 
+                            }
+                          }
+                        },
+    'primary_email':    { type: String, index: { unique: true }, required: true,
+                          validate: {
+                            validator: function(v) {
+                              return v.length >= 0 && v.length <= 50 && email_regex.test(v); 
+                            }
+                          }
+                        },
+    'city':             { type: String, default: '',
+                          validate: {
+                            validator: function(v) {
+                              return v.length >= 0 && v.length <= 50 && /^[a-z]+$/i.test(v); 
+                            }
+                          }
+                        },
     'created':          { type: Date },
     'status':           { type: String, default: 'Active' },
     'password':         { type: String, required : true },
@@ -42,9 +74,7 @@ let User = new Schema({
 });
 
 User.pre('save', function(next) {
-  console.log('pre save getting called');
   if (this.isModified('password')) {
-    console.log('modified');
     let salt = generateSalt();
     this.salt = salt;
     this.password = generateHashedPassword(this.password, salt);
@@ -59,10 +89,6 @@ User.pre('save', function(next) {
 /***************** Registration *******************/
 
 User.methods.validatePassword = function(password) {
-  console.log('pass: ' + password)
-  console.log('salt: ' + this.salt)
-  console.log('generated pass: ' + generateHashedPassword(password, this.salt));
-  console.log('stored pass: ' + this.password);
   return generateHashedPassword(password, this.salt) === this.password;
 }
 

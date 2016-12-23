@@ -15,8 +15,8 @@ export class Edit extends React.Component {
 
     submitProfileInfo(info) {
       $.ajax({
-        type: "POST",
-        url: '/v1/edit', 
+        type: "PUT",
+        url: '/v1/user', 
         data: {
           city: info.city,
           first_name: info.first_name,
@@ -47,6 +47,7 @@ export class Edit extends React.Component {
                 <ProfileForm
                   onSubmit={this.submitProfileInfo}
                   allowSetInactive={true}
+                  restrictSetPass={true}
                   allowEmptyFields={true}
                 ></ProfileForm>
               </div>
