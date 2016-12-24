@@ -3,10 +3,13 @@
 import React from 'react';
 import { Link } from 'react-router';
 
+const ActiveUser = require('../../utils/active_user');
+
 export class NavBar extends React.Component {
     constructor(props) {
         super(props);
         this._isUserLoggedIn = this._isUserLoggedIn.bind(this);
+        this._renderHomeBtn = this._renderHomeBtn.bind(this);
         this._renderLoginBtn = this._renderLoginBtn.bind(this);
         this._renderLogoutBtn = this._renderLogoutBtn.bind(this);
         this._renderStartGameBtn = this._renderStartGameBtn.bind(this);
@@ -22,30 +25,34 @@ export class NavBar extends React.Component {
       return this.props.activeUser && this.props.activeUser.length > 0;
     }
 
+    _renderHomeBtn() {
+      return <Link className='btn btn-info navbtn' to='/'>Home</Link>
+    }
+
     _renderLoginBtn() {
       if (this._isUserLoggedIn()) return;
-      return <Link className='btn btn-info' to='/login'>Login</Link>
+      return <Link className='btn btn-info navbtn' to='/login'>Login</Link>
     }
 
     _renderLogoutBtn() {
       if (!this._isUserLoggedIn()) return;
-      return <Link className='btn btn-info' onClick={this._logout} to='/login'>Logout</Link>
+      return <Link className='btn btn-info navbtn' onClick={this._logout} to='/login'>Logout</Link>
     }
 
     _renderStartGameBtn() {
-      if (!this._isUserLoggedIn()) return; 
-      return <Link className='btn btn-info' to='/start'>Start Game</Link>
+      if (this.props.isStartGamePage || !this._isUserLoggedIn()) return; 
+      return <Link className='btn btn-info navbtn' to='/start'>Start Game</Link>
     }
 
     _renderProfileBtn() {
       if (this.props.isProfile) return; 
       let link = '/profile?username=' + this.props.activeUser;
-      return <Link className='btn btn-info' to={link}>Profile</Link>
+      return <Link className='btn btn-info navbtn' to={link}>Profile</Link>
     }
 
     _renderEditBtn() {
       if (!this.props.isProfile || !this._isUserLoggedIn() || this.props.username != this.props.activeUser) return; 
-      return <Link className='btn btn-info' to='/edit'>Edit</Link>
+      return <Link className='btn btn-info navbtn' to='/edit'>Edit</Link>
     }
 
     _getEmailHash() {
@@ -59,14 +66,13 @@ export class NavBar extends React.Component {
 
     _renderRegisterBtn() {
       if (this._isUserLoggedIn()) return; 
-      return <Link className='btn btn-info' to='/signup'>Register</Link>
+      return <Link className='btn btn-info navbtn' to='/signup'>Register</Link>
     }
 
     _logout() {
-      sessionStorage.removeItem('current_user');
-      sessionStorage.removeItem('user_email');
-      sessionStorage.removeItem('email_hash');
-      console.log('logged out');
+      ActiveUser.removeActiveUser();
+      ActiveUser.removeUserEmail();
+      ActiveUser.removeEmailHash();
       $.ajax({
         type: "POST",
         dataType: "json",
@@ -82,6 +88,7 @@ export class NavBar extends React.Component {
     render() {
         return <div>
           <nav className="mynav">
+            {this._renderHomeBtn()}
             <ul>
               {this._renderLogoutBtn()}
               {this._renderStartGameBtn()}
@@ -100,4 +107,5 @@ NavBar.proptypes = {
   username: React.PropTypes.string,
   activeUser: React.PropTypes.string,
   isProfile: React.PropTypes.bool,
+  isStartGamePage: React.PropTypes.bool,
 }

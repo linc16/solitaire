@@ -181,6 +181,7 @@ export class StartGame extends React.Component {
     return <div>
       <NavBar
         activeUser={this.state.active_user}
+        isStartGamePage={true}
       ></NavBar>
       <div className="start-page">
         <div className="form-container">
