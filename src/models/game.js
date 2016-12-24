@@ -5,7 +5,7 @@
 let crypto              = require('crypto'),
     mongoose            = require('mongoose'),
     Schema              = mongoose.Schema,
-    Constants           = require('../constants.js');
+    Constants           = require('../server/constants.js');
 
 /***************** Game Model *******************/
 

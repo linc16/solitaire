@@ -2,7 +2,7 @@ let _ = require('lodash');
 let mongoose = require('mongoose');
 let validMoves = require('./valid_moves.js');
 let sanitize = require('./sanitize.js');
-let Constants = require('../constants.js');
+let Constants = require('./constants.js');
 let User = require('../models/user');
 let Game = require('../models/game');
 
@@ -125,7 +125,7 @@ function handleMove(app) {
       let valid_moves = validMoves(state, draw_num);
       console.log('requested move ' + JSON.stringify(req.body.move));
       let status_code = 400;
-      let resp = {'msg': 'failure'};
+      let resp = {'msg': 'not a valid move'};
       valid_moves.forEach( move => {
         console.log(JSON.stringify(move));
         if (_isMoveEqual(move,req.body.move)) {
@@ -198,8 +198,7 @@ function flipCards(cards) {
 }
 
 function _isGameWon(state) {
-   let num_stacks = 4; 
-   for (let i = 1; i <= num_stacks; ++i) {
+   for (let i = 1; i <= Constants.NUM_STACKS; ++i) {
      if (state['stack' + i].length < 13) return false;
    }
    return true;

@@ -1,36 +1,17 @@
 const _  = require('lodash');
+const Constants = require('./constants.js');
 
 let validMoves = function(state, draw_num) {
   let results = [];
-  let num_stacks = 4;
-  let num_piles = 7;
   results = _.concat(results, _getMovesFromPiles(state));
-  let discard_card = _.last(state['discard']);
-  if (!_.isEmpty(discard_card)) {
-    results = _.concat(results, _getMovesForCard(state, discard_card, 'discard', 'pile', num_piles));
-    results = _.concat(results, _getMovesForCard(state, discard_card, 'discard', 'stack', num_stacks));
-  }
-  for (let i = 1; i <= num_stacks; ++i) {
-    let stack = 'stack' + i;
-    let curr_card = _.last(state[stack]);
-    if (_.isEmpty(curr_card)) continue;
-    let num_cards_selected = 1;
-    results = _.concat(results, _getMovesForCard(state, curr_card, stack, 'pile', num_piles));
-  }
-  let cards = _.takeRight(state['draw'], draw_num);
-  cards = _.map(cards, card => { return _.pick(card, ['suite', 'value']) });
-  let src = 'draw';
-  let dst = 'discard';
-  if (_.isEmpty(cards)) {
-    src = 'discard';
-    dst = 'draw';
-    cards = _.map(state['discard'], card => { return _.pick(card, ['suite', 'value']) });
-  }
-  results.push({
-    'cards': cards,
-    'src': src,
-    'dst': dst,
+  
+  let cards_to_draw =  _.map(_.takeRight(state['draw'], draw_num), card => {
+    return _.pick(card, ['suite', 'value'])
   });
+  
+  results = _.concat(results, _getMovesFromDiscard(state, _.isEmpty(cards_to_draw)));
+  results = _.concat(results, _getMovesFromDraw(state, cards_to_draw));
+  
   return results;
 };
 
@@ -62,22 +43,18 @@ function _isValidMove(curr_card, dst_card, dst_pile_type) {
 }
 
 function _getMovesFromPiles(state) {
-  let num_piles = 7;
-  let num_stacks = 4;
   moves = []
-  for (let i = 1; i <= num_piles; ++i) {
+  for (let i = 1; i <= Constants.NUM_PILES; ++i) {
     let pile = 'pile' + i;
-    console.log(moves);
-    let new_moves = _getMovesFromPileToPile(state, i, num_piles);
-    console.log(new_moves);
+    let new_moves = _getMovesFromPileToPile(state, i);
     moves = _.concat(moves, new_moves);
     if (_.isEmpty(state[pile])) continue;
-    moves = _.concat(moves, _getMovesFromPileToStack(state, pile, num_stacks));
+    moves = _.concat(moves, _getMovesFromPileToStack(state, pile));
   }
   return moves;
 }
 
-function _getMovesFromPileToPile(state, pile_num, num_piles) {
+function _getMovesFromPileToPile(state, pile_num) {
   let pile = 'pile' + pile_num;
   let moves = [];
   for (let j = state[pile].length - 1; j >= 0; --j) {
@@ -86,7 +63,7 @@ function _getMovesFromPileToPile(state, pile_num, num_piles) {
     if (!(curr_card.up === 'true')) {
       break;
     }
-    for (let k = 1; k <= num_piles; ++k) {
+    for (let k = 1; k <= Constants.NUM_PILES; ++k) {
       if (k !== pile_num) {
         let dst_pile = 'pile' + k;
         let dst_card = _.last(state[dst_pile]);
@@ -103,11 +80,11 @@ function _getMovesFromPileToPile(state, pile_num, num_piles) {
   return moves;
 }
 
-function _getMovesFromPileToStack(state, pile, num_stacks) {
+function _getMovesFromPileToStack(state, pile) {
   let moves = [];
   let curr_card = _.last(state[pile]);
   let num_cards_selected = 1;
-  for (let k = 1; k <= num_stacks; ++k) {
+  for (let k = 1; k <= Constants.NUM_STACKS; ++k) {
     let dst_stack_name = 'stack' + k;
     dst_stack = state[dst_stack_name];
     let dst_card = _.last(dst_stack);
@@ -118,6 +95,34 @@ function _getMovesFromPileToStack(state, pile, num_stacks) {
     }
   }
   return moves;
+}
+
+function _getMovesFromDiscard(state, isDrawEmpty) {
+  let moves = [];
+  let discard_card = _.last(state['discard']);
+  if (!_.isEmpty(discard_card)) {
+    moves = _.concat(moves, _getMovesForCard(state, discard_card, 'discard', 'pile', Constants.NUM_PILES));
+    moves = _.concat(moves, _getMovesForCard(state, discard_card, 'discard', 'stack', Constants.NUM_STACKS));
+  }
+  if (isDrawEmpty) {
+    moves.push({
+      'cards': _.map(state['discard'], card => { return _.pick(card, ['suite', 'value']) }),
+      'src': 'discard',
+      'dst': 'draw',
+    });
+  }
+  return moves;
+}
+
+function _getMovesFromDraw(state, cards) {
+  if (_.isEmpty(cards)) return [];
+  let src = 'draw';
+  let dst = 'discard';
+  return [{
+    'cards': cards,
+    'src': src,
+    'dst': dst,
+  }];
 }
 
 function _getMovesForCard(state, card, src, dst_type, num_dsts) {
