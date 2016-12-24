@@ -48,12 +48,14 @@ function handleGetProfile(app) {
         if (req.query.username === req.session.username) {
           result = _.extend(result, {games: user.games});
         }
+        let hash = crypto.createHash('md5').update(user.primary_email).digest('hex');
         result = _.extend(result, {
-          username: user.username,
+          city: user.city,
+          email_hash: hash,
           first_name: user.first_name,
           last_name: user.last_name,
           primary_email: user.primary_email,
-          city: user.city,
+          username: user.username,
         });
         res.status(200).send(result);
       }

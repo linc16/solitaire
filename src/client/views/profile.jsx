@@ -3,6 +3,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { GameSummary } from './components/gamesummary';
+import { ProfileInfo } from './components/profileinfo';
 import { NavBar } from './components/navbar';
 const ActiveUser = require('../utils/active_user');
 
@@ -15,6 +16,7 @@ export class Profile extends React.Component {
         this.state = {
           active_user: ActiveUser.getActiveUser(),
           city: '',
+          email_hash: '',
           fastest_win: "NA",
           first_name: '',
           games: [],
@@ -57,6 +59,7 @@ export class Profile extends React.Component {
     _handleProfileInfoRes(res) {
       this.setState({
         city: res.city,
+        email_hash: res.email_hash,
         fastest_win: res.fastest_win,
         first_name: res.first_name,
         games: res.games || [],
@@ -95,65 +98,24 @@ export class Profile extends React.Component {
             ></NavBar>
             <div className="isProfile">
               <div className="form-container">
-                <div className="profile-form">
-                <div className="row myrow">
-                  <h2 className="form-signin-heading">
-                    <span className="profile-first-name" id="first_name">{this.state.first_name}</span>
-                    <span id="last_name">{this.state.last_name}</span>
-                  </h2>
-                  <h4><span id="username">{this.state.username}</span></h4>
-                </div>
-                <div className="row myrow">
-                  <div className="col-sm-4 profile-picture">
-                    <img
-                      className="profile-picture-img"
-                      src="https://s.gravatar.com/avatar/4e0e55d0dc86c5e9d5390f80a23a6f8f"
-                    ></img>
+                <div className="row profile-content">
+                  <div className="col-md-6">
+                    <ProfileInfo
+                      city={this.state.city}
+                      email_hash={this.state.email_hash}
+                      fastest_win={this.state.fastest_win}
+                      first_name={this.state.first_name}
+                      games_played={this.state.games_played}
+                      last_name={this.state.last_name}
+                      max_score={this.state.max_score}
+                      primary_email={this.state.primary_email}
+                      username={this.state.username}
+                      win_ratio={this.state.win_ratio}
+                    ></ProfileInfo>
                   </div>
-                  <div className="col-sm-6">
-                    <div className="row profile-info">
-                      <div className="col-xs-6">
-                        <span>Games Played:</span>
-                      </div>
-                      <div className="col-xs-6">
-                        <span>{this.state.games_played}</span>
-                      </div>
-                    </div>
-                    <div className="row profile-info">
-                      <div className="col-xs-6">
-                        <span>Win Ratio:</span>
-                      </div>
-                      <div className="col-xs-6">
-                        <span>{this.state.win_ratio}</span>
-                      </div>
-                    </div>
-                    <div className="row profile-info">
-                      <div className="col-xs-6">
-                        <span>Fastest Win:</span>
-                      </div>
-                      <div className="col-xs-6">
-                        <span>{this.state.fastest_win}</span>
-                      </div>
-                    </div>
-                    <div className="row profile-info">
-                      <div className="col-xs-6">
-                        <span>Highest Score:</span>
-                      </div>
-                      <div className="col-xs-6">
-                        <span>{this.state.max_score}</span>
-                      </div>
-                    </div>
+                  <div className="col-md-6">  
+                    {this._renderGameSummary()}
                   </div>
-                </div>
-                <div className="row myrow">
-                  <h5>{this.state.city}</h5>
-                </div>
-                <div className="row myrow">
-                  <h5><span id="primary_email">{this.state.primary_email}</span></h5>
-                </div>
-                <div id="game-preview">
-                  {this._renderGameSummary()}
-                </div>
                 </div>
               </div>
             </div>

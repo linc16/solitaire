@@ -116,9 +116,8 @@ body {
   margin-top: 10%;
 }
 
-.profile-form {
+.profile-content {
   margin-top: 10%;
-  width: 68%;
   height: 60%;
   padding: 15px;
 }
@@ -133,6 +132,29 @@ body {
 
 .profile-picture-img {
   width: 100%;
+  border-radius: 10%;
+}
+
+.profile-name-row {
+  border-bottom: 1px solid black;
+  width: 40%;
+}
+
+.profile-contact-row {
+  width: 60%;
+}
+
+.img-centered {
+  display: flex;
+  justify-content: center;
+}
+
+.profile-city-img {
+  height: 40px;
+}
+
+.profile-email-img {
+  height: 30px;
 }
 
 .profile-info {
