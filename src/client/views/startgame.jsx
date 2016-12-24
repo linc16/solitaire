@@ -6,6 +6,7 @@ import { browserHistory } from 'react-router'
 
 import { NavBar } from './components/navbar';
 const ActiveUser = require('../utils/active_user');
+const Constants = require('../utils/constants.js');
 
 export class StartGame extends React.Component {
   constructor(props) {

@@ -137,7 +137,7 @@ export class Game extends React.Component {
     $.ajax({
       type: "GET",
       dataType: "json",
-      url: `/v1/game/state/${id}`,
+      url: `/v1/game/${id}/state`,
       success: res => {
         console.log(res);
         this._setGameState(res.state);
@@ -188,7 +188,6 @@ export class Game extends React.Component {
     this._setGameState(res.state);
     this._clearCards();
     this._initializeCards();
-    // change this to a constant
     if (res.status === Constants.STATUS_WON) {
       this._setGameWonStatus();
     }
@@ -209,7 +208,6 @@ export class Game extends React.Component {
 
   _handleSelectCards(src) {
     if (!this._isCardSelectable(src)) return;
-    //let cardIds = _getSelectedCardIds(src);
     console.log('src: ' + src);
     let cardDepth = parseInt(this._getCardDepthFromContainerId(src));
     let cards = this._getSelectedCards('#' + this._getParentPileId('#' + src), cardDepth)

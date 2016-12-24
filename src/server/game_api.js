@@ -83,7 +83,7 @@ function updateGameState(state, id, next) {
     } else {
       console.log(result);
       console.log('no errors---------------');
-      if (next) next({}, 200);
+      if (next) next({"msg": "success"}, 200);
     }
   });
 }
@@ -286,19 +286,22 @@ function handleGet(app) {
 // Handle GET to fetch game state information
 function handleGetState(app) {
   app.get('/v1/game/:id/state', function(req, res) {
-      Game.findById(req.params.id).select('state').exec((err, game) => {
-        if (err) {
-          console.log(err);
-          res.status(500).send();
-          return;
-        }
-        if (!game) {
-            res.status(404).send({ error: 'unknown game id' });
-        } else {
-          let state = _.last(game.state, 'state');
-          res.status(200).send({state});
-        }
-      });
+    Game.findById(req.params.id).select('state').exec((err, game) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send();
+        return;
+      }
+      if (!game) {
+        res.status(404).send({ error: 'unknown game id' });
+      } else {
+        console.log(game);
+        let state = _.last(game.state, 'state');
+        console.log('----------- state ---------------');
+        console.log('state ' + JSON.stringify(state));
+        res.status(200).send({"state": state});
+      }
+    });
   });
 }
 
