@@ -26,7 +26,7 @@ export class ProfileUserInfo extends React.Component {
         </h3>
         <h4>{this.props.username}</h4>
       </div>
-      <div className='row profile-contact-row'>
+      <div className='row myrow profile-contact-row'>
         <div className='row'>
           <div className='col-xs-2 img-centered'>
             <img className='profile-city-img' src='img/city-img.png'></img>

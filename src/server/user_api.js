@@ -45,9 +45,7 @@ function handleGetProfile(app) {
           return;
       } else {
         let result = _calcPlayerGameInfo(user.games);
-        if (req.query.username === req.session.username) {
-          result = _.extend(result, {games: user.games});
-        }
+        result = _.extend(result, {games: user.games});
         let hash = crypto.createHash('md5').update(user.primary_email).digest('hex');
         result = _.extend(result, {
           city: user.city,
@@ -57,7 +55,8 @@ function handleGetProfile(app) {
           primary_email: user.primary_email,
           username: user.username,
         });
-        res.status(200).send(result);
+        result = _.pickBy(result, (value, key) => !_.isNil(value));
+        res.status(200).send(result)
       }
     });
   });

@@ -10,6 +10,8 @@ export class GameSummary extends React.Component {
         super(props);
         this._buildGameRow = this._buildGameRow.bind(this);
         this._isGameComplete = this._isGameComplete.bind(this);
+        this._addResumeLink = this._addResumeLink.bind(this);
+        this._addDeleteLink = this._addDeleteLink.bind(this);
         this._handleMarkComplete = this._handleMarkComplete.bind(this);
         this._handleDelete = this._handleDelete.bind(this);
         this._markGameAsComplete = this._markGameAsComplete.bind(this);
@@ -21,24 +23,13 @@ export class GameSummary extends React.Component {
     }
 
     _buildGameRow(game) {
-      let curr_date = new Date();
-      let className = 'btn btn-success '
-      className += this._isGameComplete(game.status) ?  'disabled' : null;
       return (
           <tr key={game._id} id={game._id}>
             <td name={game._id} className='clickable-row'>{game.type}</td>
             <td name={game._id} className='clickable-row'>{game.createdAt}</td>
             <td name={game._id} className='clickable-row'>{game.num_moves}</td>
-            <td><Link
-              name={game._id}
-              className={className}
-              to={'/game?id=' + game._id}
-            >Resume</Link></td>
-            <td><button
-              name={game._id}
-              className='btn btn-danger deleteGame'
-              onClick={this._handleDelete}
-            >Delete</button></td>
+            {this._addResumeLink(game._id, game.status)}
+            {this._addDeleteLink(game._id)}
           </tr>
       );
     }
@@ -46,6 +37,30 @@ export class GameSummary extends React.Component {
     _isGameComplete(game_status) {
      return game_status === Constants.STATUS_WON || game_status === Constants.STATUS_LOST; 
    }
+
+    _addResumeLink(game_id, game_status) {
+      if (!this.props.isActiveUserProfile) return;
+      let className = 'btn btn-success '
+      className += this._isGameComplete(game_status) ?  'disabled' : null;
+      return (
+        <td><Link
+          name={game_id}
+          className={className}
+          to={'/game?id=' + game_id}
+        >Resume</Link></td>
+      );
+    }
+
+    _addDeleteLink(game_id) {
+      if (!this.props.isActiveUserProfile) return;
+      return (
+        <td><button
+          name={game_id}
+          className='btn btn-danger deleteGame'
+          onClick={this._handleDelete}
+        >Delete</button></td>
+      );
+    }
 
     _handleMarkComplete(event) {
       event && event.preventDefault();
@@ -70,9 +85,9 @@ export class GameSummary extends React.Component {
     
     _markGameAsComplete(game_id, onSuccess) {
       $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: "/v1/game/complete/" + game_id,
+        type: 'POST',
+        dataType: 'json',
+        url: '/v1/game/complete/' + game_id,
         data: {
           username: this.props.username,
         },
@@ -83,9 +98,9 @@ export class GameSummary extends React.Component {
     
     _deleteGame(game_id, onSuccess) {
       $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: "/v1/game/delete/" + game_id,
+        type: 'POST',
+        dataType: 'json',
+        url: '/v1/game/delete/' + game_id,
         data: {
           username: this.props.username,
         },
@@ -95,9 +110,8 @@ export class GameSummary extends React.Component {
     }
     
     render() {
-        return <div>
-          <h4>Current Games</h4>
-          <table className="table table-hover" id="game-preview-table">
+        return <div className='game-preview-container'>
+          <table className='table table-hover'>
             <thead>
               <tr>
                 <th>Name</th>

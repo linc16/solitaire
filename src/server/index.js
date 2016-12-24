@@ -57,7 +57,7 @@ app.post('/v1/session', function(req, res) {
               res.status(401).send({ error: 'unauthorized' });
           } else {
               let session = req.session;
-              if (session.username) {
+              if (session.username && session.username === req.body.username) {
                 req.session.touch();
               }
               else {

@@ -1,6 +1,8 @@
 'use strict';
 
 import React from 'react';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+
 import { GameSummary } from './components/gamesummary';
 import { ProfileUserInfo } from './components/profileuserinfo';
 import { ProfileStats } from './components/profilestats';
@@ -13,19 +15,20 @@ export class Profile extends React.Component {
         this._getProfileInfo = this._getProfileInfo.bind(this);
         this._handleGameDelete = this._handleGameDelete.bind(this);
         this._getProfileOwner = this._getProfileOwner.bind(this);
+        this._isActiveUserProfile = this._isActiveUserProfile.bind(this);
         this.state = {
           active_user: ActiveUser.getActiveUser(),
           city: '',
           email_hash: '',
-          fastest_win: "NA",
+          fastest_win: 'NA',
           first_name: '',
           games: [],
-          games_played: '',
+          games_played: 'NA',
           last_name: '',
           max_score: 0,
           primary_email: '',
           username: this._getProfileOwner(),
-          win_ratio: '',
+          win_ratio: 'NA',
         };
     }
 
@@ -45,9 +48,9 @@ export class Profile extends React.Component {
 
    _getProfileInfo() {
         $.ajax({
-            type: "GET",
-            dataType: "json",
-            url: "/v1/profile/info",
+            type: 'GET',
+            dataType: 'json',
+            url: '/v1/profile/info',
             data: {
               username: this.state.username,
             },
@@ -60,15 +63,15 @@ export class Profile extends React.Component {
       this.setState({
         city: res.city,
         email_hash: res.email_hash,
-        fastest_win: res.fastest_win,
+        fastest_win: res.fastest_win || 'NA',
         first_name: res.first_name,
         games: res.games || [],
-        games_played: res.games_played,
+        games_played: res.games_played || 'NA',
         last_name: res.last_name,
-        max_score: res.max_score,
+        max_score: res.max_score || 'NA',
         primary_email: res.primary_email,
         username: res.username,
-        win_ratio: res.win_ratio,
+        win_ratio: res.win_ratio || 'NA',
       });
     }
 
@@ -78,17 +81,10 @@ export class Profile extends React.Component {
       });
     }
 
-    _renderGameSummary() {
-      if (!_.isEqual(this.state.username, this.state.active_user)) return;
-      return (
-        <GameSummary
-          games={this.state.games}
-          username={this.state.username}
-          onGameDelete={this._handleGameDelete}
-        >
-        </GameSummary>
-      )
+    _isActiveUserProfile() {
+      return _.isEqual(this.state.username, this.state.active_user);
     }
+
     render() {
         return <div>
           <NavBar
@@ -96,10 +92,10 @@ export class Profile extends React.Component {
             activeUser={this.state.active_user}
             isProfile={true}
           ></NavBar>
-          <div className="form-container">
-            <div className="profile-content">
-              <div className="row">
-                <div className="col-md-4">
+          <div className='form-container'>
+            <div className='profile-content'>
+              <div className='row'>
+                <div className='col-md-4'>
                   <ProfileUserInfo
                     city={this.state.city}
                     email_hash={this.state.email_hash}
@@ -109,17 +105,31 @@ export class Profile extends React.Component {
                     username={this.state.username}
                   ></ProfileUserInfo>
                 </div>
-                <div className="col-md-8">  
-                  {this._renderGameSummary()}
+                <div className='col-md-8'>  
+                  <Tabs>
+                    <TabList>
+                      <Tab>Games</Tab>
+                      <Tab>Stats</Tab>
+                    </TabList>
+                    <TabPanel>
+                      <GameSummary
+                        games={this.state.games}
+                        username={this.state.username}
+                        onGameDelete={this._handleGameDelete}
+                        isActiveUserProfile={this._isActiveUserProfile()}
+                      >
+                      </GameSummary>
+                    </TabPanel>
+                    <TabPanel>
+                      <ProfileStats
+                        fastest_win={this.state.fastest_win}
+                        games_played={this.state.games_played}
+                        max_score={this.state.max_score}
+                        win_ratio={this.state.win_ratio}
+                      ></ProfileStats>
+                    </TabPanel>
+                  </Tabs>
                 </div>
-              </div>
-              <div className="row">
-                <ProfileStats
-                  fastest_win={this.state.fastest_win}
-                  games_played={this.state.games_played}
-                  max_score={this.state.max_score}
-                  win_ratio={this.state.win_ratio}
-                ></ProfileStats>
               </div>
             </div>
           </div>

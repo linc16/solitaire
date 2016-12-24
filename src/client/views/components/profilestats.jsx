@@ -10,7 +10,7 @@ export class ProfileStats extends React.Component {
   render() {
     return <div>
       <div className='row profile-info'>
-        <div className='col-xs-6'>
+        <div className='col-xs-3'>
           <span>Games Played:</span>
         </div>
         <div className='col-xs-6'>
@@ -18,7 +18,7 @@ export class ProfileStats extends React.Component {
         </div>
       </div>
       <div className='row profile-info'>
-        <div className='col-xs-6'>
+        <div className='col-xs-3'>
           <span>Win Ratio:</span>
         </div>
         <div className='col-xs-6'>
@@ -26,7 +26,7 @@ export class ProfileStats extends React.Component {
         </div>
       </div>
       <div className='row profile-info'>
-        <div className='col-xs-6'>
+        <div className='col-xs-3'>
           <span>Fastest Win:</span>
         </div>
         <div className='col-xs-6'>
@@ -34,7 +34,7 @@ export class ProfileStats extends React.Component {
         </div>
       </div>
       <div className='row profile-info'>
-        <div className='col-xs-6'>
+        <div className='col-xs-3'>
           <span>Highest Score:</span>
         </div>
         <div className='col-xs-6'>
