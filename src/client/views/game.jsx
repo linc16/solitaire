@@ -66,8 +66,7 @@ export class Game extends React.Component {
 //});
 
   _initializeCards() {
-    let num_piles = 7;
-    for (let i = 1; i <= num_piles; ++i) {
+    for (let i = 1; i <= Constants.NUM_PILES; ++i) {
       this._insertPilePlaceholder('pile',i);
       let cards = JSON.parse(localStorage.getItem('pile' + i));
       let offset = 0;
@@ -93,8 +92,7 @@ export class Game extends React.Component {
       this._placeCardInPile(discard_cards[i], container_id, 'discard', 0);
     };
   
-    let num_stacks = 4;
-    for (let i = 1; i <= num_stacks; ++i) {
+    for (let i = 1; i <= Constants.NUM_STACKS; ++i) {
       this._insertPilePlaceholder('stack',i);
       let cards = JSON.parse(localStorage.getItem('stack' + i));
       for (let j = 0; j < cards.length; ++j) {

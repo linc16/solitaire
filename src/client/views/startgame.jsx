@@ -106,9 +106,8 @@ export class StartGame extends React.Component {
   }
   
   _setInitialGameState(deck, gameId, next) {
-    let num_piles = 7;
     let deck_index = 0;
-    for (let i = 1; i <= num_piles; ++i) {
+    for (let i = 1; i <= Constants.NUM_PILES; ++i) {
       let pile = []
       for (let j = 0; j < i; ++j) {
         let up = (j === i - 1);
@@ -119,8 +118,7 @@ export class StartGame extends React.Component {
       }
       localStorage.setItem('pile' + i, JSON.stringify(pile));
     }
-    let num_stacks = 4;
-    for (let i = 0; i < num_stacks; ++i) {
+    for (let i = 0; i < Constants.NUM_STACKS; ++i) {
       localStorage.setItem('stack' + (i + 1), JSON.stringify([]));
     }
     let draw = []

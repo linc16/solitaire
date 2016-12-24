@@ -1,3 +1,4 @@
+// keep in sync with src/server/constants
 const STATUS_ACTIVE = 'Active'
 const STATUS_LOST = 'Lost'
 const STATUS_WON = 'Won'
