@@ -1,9 +1,9 @@
 'use strict';
 
 import React from 'react';
-import { Link } from 'react-router';
 import { GameSummary } from './components/gamesummary';
-import { ProfileInfo } from './components/profileinfo';
+import { ProfileUserInfo } from './components/profileuserinfo';
+import { ProfileStats } from './components/profilestats';
 import { NavBar } from './components/navbar';
 const ActiveUser = require('../utils/active_user');
 
@@ -91,34 +91,38 @@ export class Profile extends React.Component {
     }
     render() {
         return <div>
-            <NavBar
-              username={this.state.username}
-              activeUser={this.state.active_user}
-              isProfile={true}
-            ></NavBar>
-            <div className="isProfile">
-              <div className="form-container">
-                <div className="row profile-content">
-                  <div className="col-md-6">
-                    <ProfileInfo
-                      city={this.state.city}
-                      email_hash={this.state.email_hash}
-                      fastest_win={this.state.fastest_win}
-                      first_name={this.state.first_name}
-                      games_played={this.state.games_played}
-                      last_name={this.state.last_name}
-                      max_score={this.state.max_score}
-                      primary_email={this.state.primary_email}
-                      username={this.state.username}
-                      win_ratio={this.state.win_ratio}
-                    ></ProfileInfo>
-                  </div>
-                  <div className="col-md-6">  
-                    {this._renderGameSummary()}
-                  </div>
+          <NavBar
+            username={this.state.username}
+            activeUser={this.state.active_user}
+            isProfile={true}
+          ></NavBar>
+          <div className="form-container">
+            <div className="profile-content">
+              <div className="row">
+                <div className="col-md-4">
+                  <ProfileUserInfo
+                    city={this.state.city}
+                    email_hash={this.state.email_hash}
+                    first_name={this.state.first_name}
+                    last_name={this.state.last_name}
+                    primary_email={this.state.primary_email}
+                    username={this.state.username}
+                  ></ProfileUserInfo>
+                </div>
+                <div className="col-md-8">  
+                  {this._renderGameSummary()}
                 </div>
               </div>
+              <div className="row">
+                <ProfileStats
+                  fastest_win={this.state.fastest_win}
+                  games_played={this.state.games_played}
+                  max_score={this.state.max_score}
+                  win_ratio={this.state.win_ratio}
+                ></ProfileStats>
+              </div>
             </div>
+          </div>
         </div>;
     }
 }

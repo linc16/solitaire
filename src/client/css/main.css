@@ -118,8 +118,8 @@ body {
 
 .profile-content {
   margin-top: 10%;
-  height: 60%;
   padding: 15px;
+  width: 85%;
 }
 
 .profile-first-name {
@@ -131,7 +131,7 @@ body {
 }
 
 .profile-picture-img {
-  width: 100%;
+  width: 180%;
   border-radius: 10%;
 }
 

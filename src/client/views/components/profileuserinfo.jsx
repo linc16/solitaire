@@ -1,9 +1,8 @@
 'use strict';
 
 import React from 'react';
-import { Link } from 'react-router';
 
-export class ProfileInfo extends React.Component {
+export class ProfileUserInfo extends React.Component {
   constructor(props) {
       super(props);
   }
@@ -18,38 +17,6 @@ export class ProfileInfo extends React.Component {
           ></img>
         </div>
         <div className='col-sm-6'>
-          <div className='row profile-info'>
-            <div className='col-xs-6'>
-              <span>Games Played:</span>
-            </div>
-            <div className='col-xs-6'>
-              <span>{this.props.games_played}</span>
-            </div>
-          </div>
-          <div className='row profile-info'>
-            <div className='col-xs-6'>
-              <span>Win Ratio:</span>
-            </div>
-            <div className='col-xs-6'>
-              <span>{this.props.win_ratio}</span>
-            </div>
-          </div>
-          <div className='row profile-info'>
-            <div className='col-xs-6'>
-              <span>Fastest Win:</span>
-            </div>
-            <div className='col-xs-6'>
-              <span>{this.props.fastest_win}</span>
-            </div>
-          </div>
-          <div className='row profile-info'>
-            <div className='col-xs-6'>
-              <span>Highest Score:</span>
-            </div>
-            <div className='col-xs-6'>
-              <span>{this.props.max_score}</span>
-            </div>
-          </div>
         </div>
       </div>
       <div className='row profile-name-row'>
@@ -81,7 +48,7 @@ export class ProfileInfo extends React.Component {
   }
 }
 
-ProfileInfo.proptypes = {
+ProfileUserInfo.proptypes = {
   city: React.PropTypes.String,
   email_hash: React.PropTypes.String,
   fastest_win: React.PropTypes.String,

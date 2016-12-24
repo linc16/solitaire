@@ -10,7 +10,6 @@ export class GameSummary extends React.Component {
         super(props);
         this._buildGameRow = this._buildGameRow.bind(this);
         this._isGameComplete = this._isGameComplete.bind(this);
-        this._getDurationInMinutes = this._getDurationInMinutes.bind(this);
         this._handleMarkComplete = this._handleMarkComplete.bind(this);
         this._handleDelete = this._handleDelete.bind(this);
         this._markGameAsComplete = this._markGameAsComplete.bind(this);
@@ -29,12 +28,6 @@ export class GameSummary extends React.Component {
           <tr key={game._id} id={game._id}>
             <td name={game._id} className='clickable-row'>{game.type}</td>
             <td name={game._id} className='clickable-row'>{game.createdAt}</td>
-            <td name={game._id} className='clickable-row'>
-              {this._getDurationInMinutes(
-                game.endDate && new Date(game.endDate) || curr_date,
-                new Date(game.createdAt)
-              )}
-            </td>
             <td name={game._id} className='clickable-row'>{game.num_moves}</td>
             <td><Link
               name={game._id}
@@ -101,21 +94,15 @@ export class GameSummary extends React.Component {
       });
     }
     
-    _getDurationInMinutes(date1, date2) {
-      let timeDiff = Math.abs(date2.getTime() - date1.getTime());
-      return Math.ceil(timeDiff / (1000 * 60));
-    }
-
     render() {
         return <div>
           <h4>Current Games</h4>
           <table className="table table-hover" id="game-preview-table">
             <thead>
               <tr>
-                <th>Type</th>
-                <th>Start Date</th>
-                <th>Duration (minutes)</th>
-                <th>Number of Moves</th>
+                <th>Name</th>
+                <th>Score</th>
+                <th>Moves</th>
               </tr>
             </thead>
             <tbody>
