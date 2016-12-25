@@ -2,13 +2,16 @@
 
 import React from 'react';
 import { Link } from 'react-router';
+import { NavBar } from './components/navbar';
 
+const ActiveUser = require('../utils/active_user');
 const Constants = require('../utils/constants.js');
 
 export class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      active_user: ActiveUser.getActiveUser(),
       status: 'active',
     }
     this.initGameState = this.initGameState.bind(this);
@@ -42,7 +45,6 @@ export class Game extends React.Component {
     this._setGameState = this._setGameState.bind(this);
     this._getParameterFromUrl = this._getParameterFromUrl.bind(this);
     this._clearCards = this._clearCards.bind(this);
-    this._getProfileLink = this._getProfileLink.bind(this);
   }
 
   componentDidMount() {
@@ -423,33 +425,13 @@ export class Game extends React.Component {
     $('.card-pile').empty();
   }
 
-  _getProfileLink() {
-    let username = sessionStorage.getItem('current_user');
-    return username && username.length > 0 ?
-      '/profile?username=' + username :
-      '/profile';
-  }
-
   render() {
     return <div>
+      <NavBar
+        activeUser={this.state.active_user}
+      ></NavBar>
       <div onload="setMovableCards()" id="game-container">
         <div>
-        <nav className="mynav game-nav">
-          <ul>
-          <Link
-            className="btn btn-info"
-            to='/login'
-          >Login</Link>
-          <Link
-            className="btn btn-info"
-            to='/signup'
-          >Sign Up</Link>
-          <Link
-            className="btn btn-info"
-            to={this._getProfileLink()}
-          >Profile</Link>
-          </ul>
-        </nav>
         <div className="row myrow seven-cols">
           <div className="mycol col-xs-1 card-pile card-pile-indicator" id="draw">
           </div>

@@ -3,8 +3,8 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { browserHistory } from 'react-router'
-
 import { NavBar } from './components/navbar';
+
 const ActiveUser = require('../utils/active_user');
 const Constants = require('../utils/constants.js');
 
