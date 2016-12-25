@@ -40,7 +40,7 @@ export class ProfileUserInfo extends React.Component {
             <img className='profile-email-img' src='img/email-img.png'></img>
           </div>
           <div className='col-xs-10'>
-            <div>{this.props.primary_email}</div>
+            <div><a href={`mailto:${this.props.primary_email}`}>{this.props.primary_email}</a></div>
           </div>
         </div>
       </div>

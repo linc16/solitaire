@@ -95,7 +95,7 @@ export class Profile extends React.Component {
           <div className='form-container'>
             <div className='profile-content'>
               <div className='row'>
-                <div className='col-md-4'>
+                <div className='col-sm-4'>
                   <ProfileUserInfo
                     city={this.state.city}
                     email_hash={this.state.email_hash}
@@ -105,7 +105,7 @@ export class Profile extends React.Component {
                     username={this.state.username}
                   ></ProfileUserInfo>
                 </div>
-                <div className='col-md-8'>  
+                <div className='col-sm-8'>  
                   <Tabs>
                     <TabList>
                       <Tab>Games</Tab>

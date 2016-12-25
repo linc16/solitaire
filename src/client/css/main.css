@@ -131,8 +131,9 @@ body {
 }
 
 .profile-picture-img {
-  width: 180%;
   border-radius: 10%;
+  max-width: 40vw;
+  width: 180%;
 }
 
 .profile-name-row {
