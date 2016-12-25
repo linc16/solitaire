@@ -2,6 +2,7 @@ let _ = require('lodash');
 let mongoose = require('mongoose');
 let crypto = require('crypto');
 let sanitize = require('./sanitize.js');
+let Constants = require('./constants.js');
 let User = require('../models/user');
 let Game = require('../models/game');
 
@@ -64,9 +65,10 @@ function handleGetProfile(app) {
 
 function _calcPlayerGameInfo(games) {
   let games_played = games.length;
-  let wins = games.filter(game => { return !_.isEmpty(game.winner) }).length;
+  let won_games = games.filter(game => { return _.isEqual(game.status, Constants.STATUS_WON) });
+  let wins = won_games.length;
   let win_ratio = wins / games_played;
-  let fastest_win_game = _.minBy(games, game => { return game.endDate - game.createdAt });
+  let fastest_win_game = _.minBy(won_games, game => { return game.endDate - game.createdAt });
   let fastest_win = fastest_win_game && fastest_win_game.endDate - fastest_win_game.createdAt;
   let max_score = _.maxBy(games, game => { return game.score });
   return {

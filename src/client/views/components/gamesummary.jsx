@@ -26,7 +26,7 @@ export class GameSummary extends React.Component {
       return (
           <tr key={game._id} id={game._id}>
             <td name={game._id} className='clickable-row'>{game.type}</td>
-            <td name={game._id} className='clickable-row'>{game.createdAt}</td>
+            <td name={game._id} className='clickable-row'>{game.score}</td>
             <td name={game._id} className='clickable-row'>{game.num_moves}</td>
             {this._addResumeLink(game._id, game.status)}
             {this._addDeleteLink(game._id)}

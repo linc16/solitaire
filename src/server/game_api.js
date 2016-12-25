@@ -133,6 +133,9 @@ function handleMove(app) {
           resp = {'state': _getNewState(state, move)};
           updateGameState(resp.state, req.body.id);
           update_query = {$inc: { 'num_moves':1}};
+          if (_.includes(move.dst, 'stack')) {
+            update_query = {$inc: { 'num_moves':1, 'score':1}};
+          }
           if (_isGameWon(resp.state)) {
             resp = _.extend(resp, { status: Constants.STATUS_WON });
             update_query = _.extend(update_query, {'status': Constants.STATUS_WON});
